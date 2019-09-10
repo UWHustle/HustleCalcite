@@ -20,11 +20,13 @@ import org.apache.calcite.schema.Table;
 import org.apache.calcite.schema.impl.AbstractSchema;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.calcite.sql.type.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map;
 
 /**
  * Schema mapped onto a directory of CSV files. Each table in the schema
@@ -59,19 +61,21 @@ public class HustleSchema extends AbstractSchema {
             while (tablesIterator.hasNext()) {
                 JSONObject jsonTable = tablesIterator.next();
                 String tableName = (String) jsonTable.get("name");
-                System.out.println(tableName);
+//                System.out.println(tableName);
                 JSONArray jsonColumns = (JSONArray) jsonTable.get("columns");
                 Iterator<JSONObject>  columnsIterator = jsonColumns.iterator();
                 ArrayList<String> columnNames = new ArrayList<>();
-                ArrayList<String> columnTypes = new ArrayList<>();
+                ArrayList<SqlTypeName> columnTypes = new ArrayList<>();
                 while (columnsIterator.hasNext()) {
                     JSONObject jsonColumn = columnsIterator.next();
-                    System.out.print(jsonColumn.get("name")+" - ");
-                    System.out.println(jsonColumn.get("column_type"));
+//                    System.out.print(jsonColumn.get("name")+" - ");
+                    JSONObject jsonTypeVariant = (JSONObject) jsonColumn.get("type_variant");
+                    String typeVariant = (String)jsonTypeVariant.keySet().iterator().next();
+//                    System.out.println(typeVariant);
                     columnNames.add((String) jsonColumn.get("name"));
-                    columnTypes.add((String) jsonColumn.get("column_type"));
+                    columnTypes.add(hustleTypeToSqlType(typeVariant));
                 }
-                System.out.println();
+//                System.out.println();
                 builder.put(tableName, new HustleTable(tableName, columnNames, columnTypes));
             }
         } catch (IOException e) {
@@ -81,7 +85,19 @@ public class HustleSchema extends AbstractSchema {
         }
         return builder.build();
     }
-
+    private SqlTypeName hustleTypeToSqlType(String htype) {
+        //TODO(chronis): match integer precision between hustle and calcite
+        String htype_lower = htype.toLowerCase();
+        switch(htype_lower){
+            case "int8": return SqlTypeName.TINYINT;
+            case "int16": return SqlTypeName.SMALLINT;
+            case "int32": return SqlTypeName.BIGINT;
+            case "int64": return SqlTypeName.INTEGER;
+            case "bool": return SqlTypeName.BOOLEAN;
+            case "char": return SqlTypeName.VARCHAR;
+            case "bits": return SqlTypeName.BINARY;
+            default: return SqlTypeName.VARCHAR;
+        }
+    }
 }
-
 // End CsvSchema.java
