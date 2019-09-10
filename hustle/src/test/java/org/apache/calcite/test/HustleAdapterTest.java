@@ -23,7 +23,6 @@ public class HustleAdapterTest {
 
     private CalciteAssert.AssertQuery sql(String sql) {
         return CalciteAssert.that()
-                .with(CalciteAssert.Config.SPARK)
                 .query(sql);
     }
 

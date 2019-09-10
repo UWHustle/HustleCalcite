@@ -13,26 +13,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * A JSON model of a simple Calcite schema.
  */
-package org.apache.calcite.adapter.hustle;
-
-import org.apache.calcite.schema.Schema;
-import org.apache.calcite.schema.SchemaFactory;
-import org.apache.calcite.schema.SchemaPlus;
-
-import java.io.File;
-import java.util.*;
-
-@SuppressWarnings("UnusedDeclaration")
-public class HustleSchemaFactory implements SchemaFactory {
-    /** Public singleton, per factory contract. */
-    public static final HustleSchemaFactory INSTANCE = new HustleSchemaFactory();
-
-    private HustleSchemaFactory() {}
-
-    public Schema create(SchemaPlus parentSchema, String name, Map<String, Object> operand) {
-       final String catalogFilePath = (String) operand.get("catalog_file");
-       File catalogFile = new File(catalogFilePath);
-       return new HustleSchema(catalogFile);
+{
+  "version": "1.0",
+  "defaultSchema": "hc",
+  "schemas": [
+    {
+      "name": "ssb",
+      "type": "custom",
+      "factory": "org.apache.calcite.adapter.hustle.HustleSchemaFactory",
+      "operand": {
+        "catalog_file": "/Users/chronis/code/calcite/hustle/src/test/resources/ssb_catalog.json"
+      }
+    },
+    {
+      "name": "tatp",
+      "type": "custom",
+      "factory": "org.apache.calcite.adapter.hustle.HustleSchemaFactory",
+      "operand": {
+        "catalog_file": "/Users/chronis/code/calcite/hustle/src/test/resources/tatp_catalog.json"
+      }
     }
+  ]
 }

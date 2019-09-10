@@ -34,15 +34,11 @@ public class HustleTable extends AbstractTable {
     protected final List<SqlTypeName> columnTypes;
 
     /** Creates a CsvTable. */
-    HustleTable(String name, List<String> columnNames, List<String> columnTypes) {
+    HustleTable(String name, List<String> columnNames, List<SqlTypeName> columnTypes) {
         this.name = name;
         this.columnNames = columnNames;
-        this.columnTypes = new ArrayList<>(columnTypes.size());
-        for (String columnType : columnTypes) {
-            //FIX THIS
-        this.columnTypes.add(SqlTypeName.SMALLINT);
+        this.columnTypes = columnTypes;
     }
-}
 
     @Override
     public RelDataType getRowType(RelDataTypeFactory typeFactory) {
