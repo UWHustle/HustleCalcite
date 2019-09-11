@@ -177,11 +177,9 @@ limitations under the License.
     <module>core</module>
     <module>elasticsearch</module>
     <module>example</module>
-    <module>file</module>
     <module>plus</module>
     <module>server</module>
     <module>spark</module>
-    <module>ubenchmark</module>
   </modules>
 
   <!-- No dependencies here. Declare dependency VERSIONS in
