@@ -5,18 +5,16 @@ import org.apache.calcite.plan.*;
 import org.apache.calcite.rel.*;
 import org.apache.calcite.schema.*;
 import org.apache.calcite.sql.*;
-import org.apache.calcite.sql.parser.*;
 import org.apache.calcite.tools.*;
 import org.junit.*;
 import static org.junit.Assert.fail;
 
-import java.sql.*;
 import java.util.*;
 
 public class SSBTest {
     private Planner planner_;
 
-    private void ComparePlans(String sqlQuery, String expectedPlan) {
+    private void ComparePlans(String sqlQuery, String expectedPlan, String hustlePlan) {
         SqlNode sqlNode = null;
         RelRoot relRoot = null;
         String plan = "";
@@ -33,6 +31,13 @@ public class SSBTest {
         }
 
         Assert.assertEquals(plan, expectedPlan);
+
+        String aa  = HustleUtils.toHustleLogicalPlan(relRoot);
+        String dd  = HustleUtils.toHustleLogicalPlan(relRoot);
+        System.out.print(dd);
+
+        Assert.assertEquals(hustlePlan, HustleUtils.toHustleLogicalPlan(relRoot));
+        int a;
     }
     @Before
     public void SetUp() {
@@ -67,7 +72,10 @@ public class SSBTest {
                         "        EnumerableTableScan(table=[[ssb, lineorder]])\n" +
                         "        EnumerableTableScan(table=[[ssb, ddate]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        String hustlePlan =
+                "";
+
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -88,7 +96,7 @@ public class SSBTest {
                         "        EnumerableTableScan(table=[[ssb, lineorder]])\n" +
                         "        EnumerableTableScan(table=[[ssb, ddate]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -110,7 +118,7 @@ public class SSBTest {
                         "        EnumerableTableScan(table=[[ssb, lineorder]])\n" +
                         "        EnumerableTableScan(table=[[ssb, ddate]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -140,7 +148,7 @@ public class SSBTest {
                         "              EnumerableTableScan(table=[[ssb, part]])\n" +
                         "            EnumerableTableScan(table=[[ssb, supplier]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -170,7 +178,7 @@ public class SSBTest {
                         "              EnumerableTableScan(table=[[ssb, part]])\n" +
                         "            EnumerableTableScan(table=[[ssb, supplier]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -200,7 +208,7 @@ public class SSBTest {
                         "              EnumerableTableScan(table=[[ssb, part]])\n" +
                         "            EnumerableTableScan(table=[[ssb, supplier]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -230,7 +238,7 @@ public class SSBTest {
                         "            EnumerableTableScan(table=[[ssb, supplier]])\n" +
                         "          EnumerableTableScan(table=[[ssb, ddate]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -260,7 +268,7 @@ public class SSBTest {
                         "            EnumerableTableScan(table=[[ssb, supplier]])\n" +
                         "          EnumerableTableScan(table=[[ssb, ddate]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -290,7 +298,7 @@ public class SSBTest {
                         "            EnumerableTableScan(table=[[ssb, supplier]])\n" +
                         "          EnumerableTableScan(table=[[ssb, ddate]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -320,7 +328,7 @@ public class SSBTest {
                         "            EnumerableTableScan(table=[[ssb, supplier]])\n" +
                         "          EnumerableTableScan(table=[[ssb, ddate]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -353,7 +361,7 @@ public class SSBTest {
                         "            EnumerableTableScan(table=[[ssb, part]])\n" +
                         "          EnumerableTableScan(table=[[ssb, lineorder]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
     @Test
@@ -387,7 +395,7 @@ public class SSBTest {
                         "            EnumerableTableScan(table=[[ssb, part]])\n" +
                         "          EnumerableTableScan(table=[[ssb, lineorder]])\n";
 
-        ComparePlans(sqlQuery, expectedPlan);
+        ComparePlans(sqlQuery, expectedPlan, "");
     }
 
 
